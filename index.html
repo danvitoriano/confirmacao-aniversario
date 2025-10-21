@@ -25,7 +25,7 @@
             background: white;
             border-radius: 20px;
             padding: 30px;
-            max-width: 400px;
+            max-width: 500px;
             width: 100%;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         }
@@ -37,6 +37,14 @@
             font-size: 24px;
         }
         
+        h2 {
+            color: #764ba2;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
         .emoji {
             text-align: center;
             font-size: 50px;
@@ -46,8 +54,72 @@
         p {
             text-align: center;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             line-height: 1.6;
+        }
+        
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .info-section h3 {
+            color: #667eea;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-section p {
+            text-align: left;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 15px;
+        }
+        
+        .info-section p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0 0;
+        }
+        
+        .menu-list li {
+            padding: 6px 0;
+            color: #333;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .menu-list li:before {
+            content: "🍴";
+            font-size: 14px;
+        }
+        
+        .subtitle {
+            color: #764ba2;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .closing-message {
+            text-align: center;
+            color: #667eea;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
         
         .form-group {
@@ -126,8 +198,32 @@
 <body>
     <div class="container">
         <div class="emoji">🎉</div>
-        <h1>Festa de Aniversário!</h1>
-        <p>Confirme sua presença na minha festa! Será um prazer ter você lá! 🎂</p>
+        <h1>Venha comemorar meus 45 anos!</h1>
+        <div class="subtitle">Festa Cansadas do Corporativo</div>
+        
+        <p>O happy hour é na <strong>sexta, dia 24/10 das 18h às 22h</strong> pra você não ter desculpa pra não vir! 😄</p>
+        
+        <div class="info-section">
+            <h3>📍 Local</h3>
+            <p><strong>Salão de Festas do Hello Vila Mariana</strong></p>
+            <p>Rua Gaspar Lourenço, 276</p>
+        </div>
+        
+        <div class="info-section">
+            <h3>🍽️ Cardápio</h3>
+            <ul class="menu-list">
+                <li>Salgados de festa</li>
+                <li>Docinhos</li>
+                <li>Bolo</li>
+                <li>Heineken</li>
+                <li>Refrigerante</li>
+                <li>Vinho</li>
+            </ul>
+        </div>
+        
+        <div class="closing-message">
+            Te espero pra comemorarmos! 🎂🥳
+        </div>
         
         <form id="confirmForm">
             <div class="form-group">
