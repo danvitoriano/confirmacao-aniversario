@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Presença - Festa de Aniversário</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .emoji {
+            text-align: center;
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">🎉</div>
+        <h1>Festa de Aniversário!</h1>
+        <p>Confirme sua presença na minha festa! Será um prazer ter você lá! 🎂</p>
+        
+        <form id="confirmForm">
+            <div class="form-group">
+                <label for="nome">Seu Nome:</label>
+                <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo">
+            </div>
+            
+            <button type="submit" id="submitBtn">
+                Confirmar Presença ✓
+            </button>
+        </form>
+        
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        // IMPORTANTE: Substitua esta URL pela URL do seu Google Apps Script
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxotD5XXPjk9lQxEqnduX4goX8Ud5yH7ObrbXSnh1EKbv2BT_0vRrvZ5_MLOm-ZFj45/exec';
+        
+        document.getElementById('confirmForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const nome = document.getElementById('nome').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('message');
+            
+            if (!nome) {
+                showMessage('Por favor, digite seu nome!', 'error');
+                return;
+            }
+            
+            // Desabilita o botão durante o envio
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nome: nome })
+                });
+                
+                // Com no-cors, não podemos ler a resposta, mas assumimos sucesso
+                showMessage('Presença confirmada com sucesso! Obrigado! 🎉', 'success');
+                document.getElementById('nome').value = '';
+                
+            } catch (error) {
+                showMessage('Erro ao confirmar presença. Tente novamente!', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirmar Presença ✓';
+            }
+        });
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
+
+<!-- 
+INSTRUÇÕES PARA CONFIGURAR O GOOGLE SHEETS:
+
+1. Crie uma nova planilha no Google Sheets
+2. Vá em Extensões > Apps Script
+3. Cole o código abaixo no editor:
+
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const data = JSON.parse(e.postData.contents);
+    const nome = data.nome;
+    const timestamp = new Date();
+    
+    // Adiciona cabeçalhos se for a primeira linha
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(['Nome', 'Data/Hora']);
+    }
+    
+    // Adiciona o nome e timestamp
+    sheet.appendRow([nome, timestamp]);
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'success',
+      message: 'Confirmação registrada!'
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'error',
+      message: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return doPost(e);
+}
+
+4. Clique em "Implantar" > "Nova implantação"
+5. Escolha "Aplicativo da Web"
+6. Configure:
+   - Executar como: Você
+   - Quem tem acesso: Qualquer pessoa
+7. Clique em "Implantar"
+8. Copie a URL fornecida
+9. Cole a URL na variável SCRIPT_URL no HTML acima
+
+Pronto! Agora você pode compartilhar o link do HTML via WhatsApp!
+-->
