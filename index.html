@@ -122,6 +122,40 @@
             margin-bottom: 20px;
         }
         
+        .hero-image {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        a.button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 20px;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        a.button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        a.button:active {
+            transform: translateY(0);
+        }
+        
         .form-group {
             margin-bottom: 20px;
         }
@@ -158,6 +192,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 20px;
         }
         
         button:hover {
@@ -201,57 +236,72 @@
         <h1>Venha comemorar meus 45 anos!</h1>
         <div class="subtitle">Festa Cansadas do Corporativo</div>
         
-        <p>O happy hour é na <strong>sexta, dia 24/10 das 18h às 22h</strong> pra você não ter desculpa pra não vir! 😄</p>
+        <p>O happy hour é na <strong>sexta, dia 24/10 (meu niver) das 18h às 22h</strong> pra você vir direto do corporativo e não ter desculpas! 😄</p>
+
+        <form id="confirmForm2">
+            <div class="form-group">
+                <label for="nome2">Confirme sua presença:</label>
+                <input type="text" id="nome2" name="nome2" required placeholder="Digite seu nome completo">
+            </div>
+            
+            <button type="submit" id="submitBtn2">
+                Confirmar Presença ✓
+            </button>
+        </form>
+        
+        <div id="message2" class="message"></div>
+
+        <img src="images/cansada-menina.jpeg" alt="Cansada, menina..." class="hero-image">
+        
         
         <div class="info-section">
             <h3>📍 Local</h3>
-            <p><strong>Salão de Festas do Hello Vila Mariana</strong></p>
+            <p><strong>Hello Vila Mariana</strong> - Salão de Festas do meu prédio</p>
             <p>Rua Gaspar Lourenço, 276</p>
+            <a href="https://maps.google.com/?q=Rua+Gaspar+Lourenço,+276,+Vila+Mariana,+São+Paulo" target="_blank" style="display: inline-block; margin-top: 10px; color: #ff6b9d; text-decoration: none; font-weight: bold;">
+                📍 Ver no Google Maps
+            </a>
         </div>
         
         <div class="info-section">
             <h3>🍽️ Cardápio</h3>
             <ul class="menu-list">
-                <li>Salgados de festa</li>
-                <li>Docinhos</li>
+                <li>Coxinhas de frango</li>
+                <li>Bolinhas de queijo</li>
+                <li>Kibe</li>
+                <li>Brigadeiro</li>
+                <li>Beijinho</li>
                 <li>Bolo</li>
                 <li>Heineken</li>
                 <li>Refrigerante</li>
                 <li>Vinho</li>
             </ul>
         </div>
+
+        <a href="#confirmForm2" class="button">Confirmar presença</a>
         
         <div class="closing-message">
             Te espero pra comemorarmos! 🎂🥳
         </div>
-        
-        <form id="confirmForm">
-            <div class="form-group">
-                <label for="nome">Seu Nome:</label>
-                <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo">
-            </div>
-            
-            <button type="submit" id="submitBtn">
-                Confirmar Presença ✓
-            </button>
-        </form>
-        
-        <div id="message" class="message"></div>
+        <p>📱 Qualquer dúvida, <a href="https://wa.me/5511931437238" target="_blank" style="display: inline-block; margin-top: 10px; color: #ff6b9d; text-decoration: none; font-weight: bold;">
+            me chama no WhatsApp
+        </a>!</p>
     </div>
 
     <script>
         // IMPORTANTE: Substitua esta URL pela URL do seu Google Apps Script
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxotD5XXPjk9lQxEqnduX4goX8Ud5yH7ObrbXSnh1EKbv2BT_0vRrvZ5_MLOm-ZFj45/exec';
         
-        document.getElementById('confirmForm').addEventListener('submit', async function(e) {
+        document.getElementById('confirmForm2').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const nome = document.getElementById('nome').value.trim();
-            const submitBtn = document.getElementById('submitBtn');
-            const messageDiv = document.getElementById('message');
+            const nome = document.getElementById('nome2').value.trim();
+            const form = document.getElementById('confirmForm2');
+            const messageDiv = document.getElementById('message2');
+            const submitBtn = document.getElementById('submitBtn2');
             
             if (!nome) {
-                showMessage('Por favor, digite seu nome!', 'error');
+                showMessage(messageDiv, form, 'Por favor, digite seu nome!', 'error', false);
                 return;
             }
             
@@ -270,25 +320,35 @@
                 });
                 
                 // Com no-cors, não podemos ler a resposta, mas assumimos sucesso
-                showMessage('Presença confirmada com sucesso! Obrigado! 🎉', 'success');
-                document.getElementById('nome').value = '';
+                showMessage(messageDiv, form, 'Presença confirmada com sucesso! Obrigado! 🎉', 'success', true);
+                document.getElementById('nome2').value = '';
                 
             } catch (error) {
-                showMessage('Erro ao confirmar presença. Tente novamente!', 'error');
-            } finally {
+                showMessage(messageDiv, form, 'Erro ao confirmar presença. Tente novamente!', 'error', false);
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Confirmar Presença ✓';
             }
         });
         
-        function showMessage(text, type) {
-            const messageDiv = document.getElementById('message');
+        function showMessage(messageDiv, formElement, text, type, hideForm) {
             messageDiv.textContent = text;
             messageDiv.className = 'message ' + type;
             messageDiv.style.display = 'block';
             
+            if (hideForm) {
+                formElement.style.display = 'none';
+            }
+            
             setTimeout(() => {
                 messageDiv.style.display = 'none';
+                if (hideForm) {
+                    formElement.style.display = 'block';
+                    const submitBtn = formElement.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Confirmar Presença ✓';
+                    }
+                }
             }, 5000);
         }
     </script>
